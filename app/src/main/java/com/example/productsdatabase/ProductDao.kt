@@ -15,6 +15,11 @@ interface ProductDao {
     @Delete
     suspend fun deleteProduct(product: Product)
 
-    @Query("SELECT * FROM product_table ORDER BY name ASC")
-    fun getAllProducts(): LiveData<List<Product>>
+    @Query(
+        "SELECT * FROM product_table ORDER BY " +
+                "CASE WHEN :order = 'name' THEN name END ASC, " +
+                "CASE WHEN :order = 'price' THEN price END ASC, " +
+                "CASE WHEN :order = '' THEN id END DESC "
+    )
+    fun getAllProducts(order: String): LiveData<List<Product>>
 }

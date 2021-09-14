@@ -16,6 +16,13 @@
         <action
             android:id="@+id/action_listFragment_to_updateFragment"
             app:destination="@id/updateFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_sortFragment"
+            app:destination="@id/sortFragment" />
+        <argument
+            android:name="sortOrder"
+            app:argType="string"
+            android:defaultValue=""/>
     </fragment>
     <fragment
         android:id="@+id/addFragment"
@@ -36,5 +43,14 @@
         <argument
             android:name="currentProduct"
             app:argType="com.example.productsdatabase.Product" />
+    </fragment>
+    <fragment
+        android:id="@+id/sortFragment"
+        android:name="com.example.productsdatabase.fragments.sort.SortFragment"
+        android:label="Sort by"
+        tools:layout="@layout/fragment_sort" >
+        <action
+            android:id="@+id/action_sortFragment_to_listFragment"
+            app:destination="@id/listFragment" />
     </fragment>
 </navigation>
