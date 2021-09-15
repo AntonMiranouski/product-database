@@ -1,4 +1,4 @@
-package com.example.productsdatabase
+package com.example.productsdatabase.view
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

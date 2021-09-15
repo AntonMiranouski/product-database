@@ -12,8 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.productsdatabase.Product
-import com.example.productsdatabase.ProductViewModel
-import com.example.productsdatabase.ProductViewModelFactory
+import com.example.productsdatabase.view.ProductViewModel
+import com.example.productsdatabase.view.ProductViewModelFactory
 import com.example.productsdatabase.databinding.FragmentAddBinding
 
 class AddFragment : Fragment() {

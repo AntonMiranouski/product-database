@@ -1,4 +1,4 @@
-package com.example.productsdatabase
+package com.example.productsdatabase.data.cursor
 
 import android.content.ContentValues
 import android.content.Context
@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.productsdatabase.data.ProductDao
+import com.example.productsdatabase.Product
 import java.sql.SQLException
 
 private const val LOG_TAG = "ProductDbHelper"

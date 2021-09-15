@@ -1,9 +1,13 @@
-package com.example.productsdatabase
+package com.example.productsdatabase.view
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.example.productsdatabase.Product
+import com.example.productsdatabase.data.room.ProductDatabase
+import com.example.productsdatabase.data.cursor.ProductDbHelper
+import com.example.productsdatabase.data.room.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

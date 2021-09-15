@@ -1,6 +1,8 @@
-package com.example.productsdatabase
+package com.example.productsdatabase.data.room
 
 import androidx.lifecycle.LiveData
+import com.example.productsdatabase.data.ProductDao
+import com.example.productsdatabase.Product
 
 class ProductRepository(private val productDao: ProductDao) {
 
