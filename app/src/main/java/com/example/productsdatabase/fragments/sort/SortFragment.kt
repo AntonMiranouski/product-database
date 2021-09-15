@@ -1,19 +1,20 @@
 package com.example.productsdatabase.fragments.sort
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.productsdatabase.R
+import androidx.navigation.fragment.navArgs
 import com.example.productsdatabase.databinding.FragmentSortBinding
-import com.example.productsdatabase.fragments.list.ListFragmentDirections
 
 class SortFragment : Fragment() {
 
     private var _binding: FragmentSortBinding? = null
     private val binding get() = _binding!!
+
+    private val args by navArgs<SortFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,17 +25,19 @@ class SortFragment : Fragment() {
 
         binding.btnName.setOnClickListener {
             val order = binding.btnName.text.toString().lowercase()
-            val action = SortFragmentDirections.actionSortFragmentToListFragment(order)
+            val action =
+                SortFragmentDirections.actionSortFragmentToListFragment(order, args.spinnerPosition)
             findNavController().navigate(action)
         }
 
         binding.btnPrice.setOnClickListener {
             val order = binding.btnPrice.text.toString().lowercase()
-            val action = SortFragmentDirections.actionSortFragmentToListFragment(order)
+            val action =
+                SortFragmentDirections.actionSortFragmentToListFragment(order, args.spinnerPosition)
             findNavController().navigate(action)
         }
 
-         return binding.root
+        return binding.root
     }
 
     override fun onDestroyView() {

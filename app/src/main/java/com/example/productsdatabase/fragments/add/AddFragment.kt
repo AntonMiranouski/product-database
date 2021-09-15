@@ -10,9 +10,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.productsdatabase.Product
 import com.example.productsdatabase.ProductViewModel
-import com.example.productsdatabase.R
+import com.example.productsdatabase.ProductViewModelFactory
 import com.example.productsdatabase.databinding.FragmentAddBinding
 
 class AddFragment : Fragment() {
@@ -22,6 +23,8 @@ class AddFragment : Fragment() {
 
     private lateinit var productViewModel: ProductViewModel
 
+    private val args by navArgs<AddFragmentArgs>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,7 +32,10 @@ class AddFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentAddBinding.inflate(inflater, container, false)
 
-        productViewModel = ViewModelProvider(this).get(ProductViewModel::class.java)
+        val viewModelFactory =
+            ProductViewModelFactory(activity?.application!!, args.spinnerPosition)
+        productViewModel =
+            ViewModelProvider(this, viewModelFactory).get(ProductViewModel::class.java)
 
         binding.btnAdd.setOnClickListener {
             addToDatabase()
@@ -47,8 +53,9 @@ class AddFragment : Fragment() {
             productViewModel.addProduct(product)
 
             Toast.makeText(requireContext(), "Product added", Toast.LENGTH_LONG).show()
-
-            findNavController().navigate(R.id.action_addFragment_to_listFragment)
+            val action =
+                AddFragmentDirections.actionAddFragmentToListFragment(spinnerPosition = args.spinnerPosition)
+            findNavController().navigate(action)
         } else {
             Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_LONG).show()
         }

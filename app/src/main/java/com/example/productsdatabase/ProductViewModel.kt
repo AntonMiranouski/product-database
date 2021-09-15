@@ -7,15 +7,17 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ProductViewModel(application: Application) : AndroidViewModel(application) {
+class ProductViewModel(application: Application, private val position: Int) :
+    AndroidViewModel(application) {
 
-    var isDbRoom = true
-    private val repository = ProductRepository(ProductDatabase.getDatabase(application).productDao())
+    private val repository =
+        ProductRepository(ProductDatabase.getDatabase(application.applicationContext).productDao())
     private val dbHelper = ProductDbHelper(application.applicationContext)
     var getAllProducts: LiveData<List<Product>>
 
+    // position == 0 for Room implementation, 1 for Cursor
     init {
-        getAllProducts = if (isDbRoom) {
+        getAllProducts = if (position == 0) {
             repository.getAllProducts("")
         } else {
             dbHelper.getAllProducts("")
@@ -23,7 +25,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun sortProducts(order: String) {
-        getAllProducts = if (isDbRoom) {
+        getAllProducts = if (position == 0) {
             repository.getAllProducts(order)
         } else {
             dbHelper.getAllProducts(order)
@@ -32,7 +34,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
 
     fun addProduct(product: Product) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (isDbRoom) {
+            if (position == 0) {
                 repository.addProduct(product)
             } else {
                 dbHelper.addProduct(product)
@@ -42,7 +44,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
 
     fun updateProduct(product: Product) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (isDbRoom) {
+            if (position == 0) {
                 repository.updateProduct(product)
             } else {
                 dbHelper.updateProduct(product)
@@ -52,7 +54,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
 
     fun deleteProduct(product: Product) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (isDbRoom) {
+            if (position == 0) {
                 repository.deleteProduct(product)
             } else {
                 dbHelper.deleteProduct(product)

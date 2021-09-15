@@ -30,7 +30,10 @@ class ListAdapter(private val parentFragment: ListFragment) :
         holder.binding.tvPrice.text = currentItem.price.toString()
 
         holder.binding.rowLayout.setOnClickListener {
-            val action = ListFragmentDirections.actionListFragmentToUpdateFragment(currentItem)
+            val action = ListFragmentDirections.actionListFragmentToUpdateFragment(
+                currentItem,
+                parentFragment.spinnerPosition
+            )
             parentFragment.findNavController().navigate(action)
         }
     }

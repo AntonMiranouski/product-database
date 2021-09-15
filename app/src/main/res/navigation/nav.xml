@@ -23,6 +23,10 @@
             android:name="sortOrder"
             app:argType="string"
             android:defaultValue=""/>
+        <argument
+            android:name="spinnerPosition"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/addFragment"
@@ -32,6 +36,10 @@
         <action
             android:id="@+id/action_addFragment_to_listFragment"
             app:destination="@id/listFragment" />
+        <argument
+            android:name="spinnerPosition"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/updateFragment"
@@ -43,6 +51,10 @@
         <argument
             android:name="currentProduct"
             app:argType="com.example.productsdatabase.Product" />
+        <argument
+            android:name="spinnerPosition"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/sortFragment"
@@ -52,5 +64,9 @@
         <action
             android:id="@+id/action_sortFragment_to_listFragment"
             app:destination="@id/listFragment" />
+        <argument
+            android:name="spinnerPosition"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>

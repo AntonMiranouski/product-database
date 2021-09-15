@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.productsdatabase.ProductViewModel
+import com.example.productsdatabase.ProductViewModelFactory
 import com.example.productsdatabase.R
 import com.example.productsdatabase.databinding.FragmentListBinding
 
@@ -22,6 +23,7 @@ class ListFragment : Fragment() {
     private lateinit var productViewModel: ProductViewModel
 
     private val args by navArgs<ListFragmentArgs>()
+    var spinnerPosition = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,11 +39,16 @@ class ListFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // Add spinner
+        if (args.spinnerPosition != -1) {
+            spinnerPosition = args.spinnerPosition
+        }
         setSpinner(binding.spinnerDb)
-        // TODO save state and toggle db implementation
 
-        // ProductViewModel
-        productViewModel = ViewModelProvider(this).get(ProductViewModel::class.java)
+        val viewModelFactory = ProductViewModelFactory(activity?.application!!, spinnerPosition)
+        productViewModel =
+            ViewModelProvider(this, viewModelFactory).get(ProductViewModel::class.java)
+
+        // Get all data, with or without sort
         if (args.sortOrder != "") {
             productViewModel.sortProducts(args.sortOrder)
         }
@@ -50,7 +57,8 @@ class ListFragment : Fragment() {
         })
 
         binding.floatingActionButton.setOnClickListener {
-            findNavController().navigate(R.id.action_listFragment_to_addFragment)
+            val action = ListFragmentDirections.actionListFragmentToAddFragment(spinnerPosition)
+            findNavController().navigate(action)
         }
 
         // Add menu
@@ -58,6 +66,7 @@ class ListFragment : Fragment() {
 
         return binding.root
     }
+
 
     private fun setSpinner(spinner: Spinner) {
         val spinnerAdapter: ArrayAdapter<*> = ArrayAdapter.createFromResource(
@@ -67,18 +76,13 @@ class ListFragment : Fragment() {
         )
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = spinnerAdapter
-
+        spinner.setSelection(spinnerPosition)
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 itemSelected: View?, selectedItemPosition: Int, selectedId: Long
             ) {
-                val choose = resources.getStringArray(R.array.db_array)
-                if (choose[selectedItemPosition] == "Room") {
-                    productViewModel.isDbRoom = true
-                } else if (choose[selectedItemPosition] == "Cursor") {
-                    productViewModel.isDbRoom = false
-                }
+                spinnerPosition = selectedItemPosition
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -91,7 +95,8 @@ class ListFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_sort) {
-            findNavController().navigate(R.id.action_listFragment_to_sortFragment)
+            val action = ListFragmentDirections.actionListFragmentToSortFragment(spinnerPosition)
+            findNavController().navigate(action)
         }
         return super.onOptionsItemSelected(item)
     }

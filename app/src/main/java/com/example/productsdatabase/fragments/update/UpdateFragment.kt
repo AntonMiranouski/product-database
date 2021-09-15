@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.productsdatabase.Product
 import com.example.productsdatabase.ProductViewModel
+import com.example.productsdatabase.ProductViewModelFactory
 import com.example.productsdatabase.R
 import com.example.productsdatabase.databinding.FragmentUpdateBinding
 
@@ -31,7 +32,10 @@ class UpdateFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentUpdateBinding.inflate(inflater, container, false)
 
-        productViewModel = ViewModelProvider(this).get(ProductViewModel::class.java)
+        val viewModelFactory =
+            ProductViewModelFactory(activity?.application!!, args.spinnerPosition)
+        productViewModel =
+            ViewModelProvider(this, viewModelFactory).get(ProductViewModel::class.java)
 
         binding.etNameUpdate.setText(args.currentProduct.name)
         binding.etPriceUpdate.setText(args.currentProduct.price.toString())
@@ -66,8 +70,9 @@ class UpdateFragment : Fragment() {
             productViewModel.updateProduct(product)
 
             Toast.makeText(requireContext(), "Product updated", Toast.LENGTH_LONG).show()
-
-            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
+            val action = UpdateFragmentDirections
+                .actionUpdateFragmentToListFragment(spinnerPosition = args.spinnerPosition)
+            findNavController().navigate(action)
         } else {
             Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_LONG).show()
         }
@@ -87,7 +92,9 @@ class UpdateFragment : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
 
-            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
+            val action = UpdateFragmentDirections
+                .actionUpdateFragmentToListFragment(spinnerPosition = args.spinnerPosition)
+            findNavController().navigate(action)
         }
         builder.setNegativeButton("No") { _, _ -> }
         builder.setTitle("Delete ${args.currentProduct.name}?")
